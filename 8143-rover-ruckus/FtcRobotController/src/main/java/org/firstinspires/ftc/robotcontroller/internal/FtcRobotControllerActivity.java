@@ -102,9 +102,7 @@ import org.firstinspires.ftc.ftccommon.internal.FtcRobotControllerWatchdogServic
 import org.firstinspires.ftc.ftccommon.internal.ProgramAndManageActivity;
 import org.firstinspires.ftc.robotcore.external.navigation.MotionDetection;
 import org.firstinspires.ftc.robotcore.internal.hardware.DragonboardLynxDragonboardIsPresentPin;
-import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManager;
 import org.firstinspires.ftc.robotcore.internal.network.DeviceNameManagerFactory;
-import org.firstinspires.ftc.robotcore.internal.network.WifiDirectDeviceNameManager;
 import org.firstinspires.ftc.robotcore.internal.network.PreferenceRemoterRC;
 import org.firstinspires.ftc.robotcore.internal.network.StartResult;
 import org.firstinspires.ftc.robotcore.internal.network.WifiMuteEvent;
@@ -125,12 +123,12 @@ import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.text.FieldPosition;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ftc.vision.FrameGrabber;
 import ftc.vision.Result;
-import ftc.vision.ruckus.BallProcessor;
 import ftc.vision.ruckus.MineralProcessor;
 
 @SuppressWarnings("WeakerAccess")
@@ -141,6 +139,8 @@ public class FtcRobotControllerActivity extends Activity
 
   private static final int REQUEST_CONFIG_WIFI_CHANNEL = 1;
   private static final int NUM_GAMEPADS = 2;
+  private static final int FIELD_POSITION_CODE = 415;
+
 
   protected WifiManager.WifiLock wifiLock;
   protected RobotConfigFileManager cfgFileMgr;
@@ -640,6 +640,11 @@ public class FtcRobotControllerActivity extends Activity
       startActivity(intent);
       return true;
     }
+    else if (id == R.id.set_field_position) {
+      Intent intent = new Intent(AppUtil.getDefContext(), FieldPositionActivity.class);
+      startActivityForResult(intent, FIELD_POSITION_CODE);
+      return true;
+    }
     else if (id == R.id.action_exit_app) {
       finish();
       return true;
@@ -659,6 +664,10 @@ public class FtcRobotControllerActivity extends Activity
     if (request == REQUEST_CONFIG_WIFI_CHANNEL) {
       if (result == RESULT_OK) {
         AppUtil.getInstance().showToast(UILocation.BOTH, context, context.getString(R.string.toastWifiConfigurationComplete));
+      }
+    } else if (request == FIELD_POSITION_CODE) {
+      if (result == RESULT_OK) {
+        AppUtil.getInstance().showToast(UILocation.BOTH, context, "Position Set");
       }
     }
     // was some historical confusion about launch codes here, so we err safely
