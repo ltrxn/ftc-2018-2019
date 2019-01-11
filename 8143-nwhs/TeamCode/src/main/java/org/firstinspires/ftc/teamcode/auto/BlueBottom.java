@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.auto;
 
 public class BlueBottom extends OpModeBase{
 
@@ -9,6 +9,9 @@ public class BlueBottom extends OpModeBase{
         initSensors();
 
         waitForStart();
+        runBlueBottom();
+    }
 
+    public static void runBlueBottom() {
     }
 }

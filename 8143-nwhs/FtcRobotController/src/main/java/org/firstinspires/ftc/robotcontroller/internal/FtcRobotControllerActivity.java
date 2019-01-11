@@ -56,6 +56,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -185,6 +186,7 @@ public class FtcRobotControllerActivity extends Activity
   static final int FRAME_WIDTH = 352; //width of camera view
   static final int FRAME_HEIGHT = 288; //height of camera view
   public static FrameGrabber frameGrabber = null;
+  public boolean isPaused = false;
 
 
   //BASELOADER
@@ -208,7 +210,7 @@ public class FtcRobotControllerActivity extends Activity
 
     frameGrabber = new FrameGrabber(cameraView,FRAME_WIDTH, FRAME_HEIGHT);
     frameGrabber.setProcessor(new MineralProcessor());
-
+    myOnPause();
   }
 
   void myOnResume() {
@@ -219,12 +221,14 @@ public class FtcRobotControllerActivity extends Activity
       Log.d(TAG, "opencv loaded successfully");
       baseLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
     }
+    isPaused = false;
   }
 
   void myOnPause () {
     if (cameraView!=null) {
       cameraView.disableView();
     }
+    isPaused=true;
   }
 
   void myOnDestoy() {
@@ -241,7 +245,16 @@ public class FtcRobotControllerActivity extends Activity
       resultText.setText(result.toString());
 
     }
-
+  public void pauseButtonOnClick(View v) {
+    Button resultButton = (Button) findViewById(R.id.pauseButton);
+    if (isPaused) {
+      myOnResume();
+      resultButton.setText("PAUSE");
+    } else {
+      myOnPause();
+      resultButton.setText("RESUME");
+    }
+  }
   /***END OF VISION CODE***/
 
   protected class RobotRestarter implements Restarter {
@@ -344,6 +357,7 @@ public class FtcRobotControllerActivity extends Activity
 
     /***START OF VISION CODE***/
     myOnCreate();
+    myOnPause();
     /***END OF VISION CODE***/
 
     preferencesHelper = new PreferencesHelper(TAG, context);
