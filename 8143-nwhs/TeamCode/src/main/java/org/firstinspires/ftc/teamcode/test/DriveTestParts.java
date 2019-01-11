@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * This OpMode tests each motor and servo
  */
-@TeleOp(name= "Test for Plug", group = "TestCodes")
-public class testForPlug extends LinearOpMode {
+@TeleOp(name= "test different parts", group = "test")
+public class DriveTestParts extends LinearOpMode {
     //motors
     public DcMotor leftFront;
     public DcMotor rightFront;

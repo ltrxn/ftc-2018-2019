@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name= "FirstTeleop", group = "TestCodes")
-public class teleop extends LinearOpMode {
+@TeleOp(name= "basic driving", group = "test")
+public class DriveBasic extends LinearOpMode {
     public DcMotor leftFront;
     public DcMotor rightFront;
     public DcMotor leftBack;
