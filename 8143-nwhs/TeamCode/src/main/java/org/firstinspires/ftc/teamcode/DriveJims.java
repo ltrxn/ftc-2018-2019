@@ -4,8 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="Jimmy Drive", group = "official")
-public class DriveJim extends LinearOpMode {
+@TeleOp(name="Jimmies Drive", group = "official")
+
+public class DriveJims extends LinearOpMode {
     HardwareJimHalpert robot = new HardwareJimHalpert();
 
     @Override
@@ -29,11 +30,11 @@ public class DriveJim extends LinearOpMode {
 
             //right trigger moves pully up
             //left trigger moves pully down.
-            if (gamepad1.right_trigger>0) {
-                robot.harvesterLift.setPower(gamepad1.right_trigger/2);
-             }
-             else if (gamepad1.left_trigger > 0) {
-                robot.harvesterLift.setPower(-gamepad1.left_trigger/2);
+            if (gamepad2.right_trigger>0) {
+                robot.harvesterLift.setPower(gamepad2.right_trigger/2);
+            }
+            else if (gamepad2.left_trigger > 0) {
+                robot.harvesterLift.setPower(-gamepad2.left_trigger/2);
             }
             else {
                 robot.harvesterLift.setPower(0.);
@@ -42,39 +43,38 @@ public class DriveJim extends LinearOpMode {
             //CHANGE TO if right is >0, then set power, and then ELSE IF left is >0 then set left power.
 
             //dpad moves lift up
-            if(gamepad1.dpad_up) {
-                robot.lift.setPower(-.9);
+            if(gamepad1.dpad_up || gamepad2.dpad_up) {
+                robot.lift.setPower(9);
             } else {
                 robot.lift.setPower(0);
             }
 
             //dpad moves lift down
-            if(gamepad1.dpad_down) {
-                robot.lift.setPower(.9);
+            if(gamepad1.dpad_down || gamepad2.dpad_down) {
+                robot.lift.setPower(-.9);
             } else {
                 robot.lift.setPower(0);
             }
 
             //pressing 'a' will turn on/off intake
             //pressing 'b' will turn on/off outtake
-            if (gamepad1.a && robot.harvesterIsOn) {
-                robot.harvesterOff();
-            } else if (gamepad1.a && !robot.harvesterIsOn) {
+            if (gamepad2.a) {
                 robot.harvesterOn();
-            } else if (gamepad1.x && robot.harvesterIsOn) {
+            } else if (gamepad2.x) {
                 robot.harvesterOff();
-            } else if (gamepad1.x && !robot.harvesterIsOn) {
+            } else if (gamepad2.b) {
                 robot.harvesterReverse();
             }
             //pressing y will bring hook to vertical position
-            if (gamepad1.y) {
+            if (gamepad2.dpad_right) {
                 robot.liftHook.setPosition(0.04);
             }
 
             //pressing b will unhook
-            if (gamepad1.b) {
+            if (gamepad2.dpad_left) {
                 robot.liftHook.setPosition(.3);
             }
+
             //telemetry
             telemetry.addLine("left joystick | ")
                     .addData("x", gamepad1.left_stick_x)
@@ -97,5 +97,3 @@ public class DriveJim extends LinearOpMode {
         }
     }
 }
-
-

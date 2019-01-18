@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.test;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
@@ -24,6 +25,7 @@ public class DriveTestParts extends LinearOpMode {
     private double testingPower = 0.3;
     private double armPosition = 0.5;
     private double armDelta = 0.05;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -34,41 +36,60 @@ public class DriveTestParts extends LinearOpMode {
         rightBack = hardwareMap.dcMotor.get("rightBack");
         lift = hardwareMap.dcMotor.get("lift");
         harvesterLift = hardwareMap.dcMotor.get("harvesterLift");
+
         liftHook = hardwareMap.servo.get("liftHook");
         harvesterIntake = hardwareMap.servo.get("harvesterIntake");
 
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 
         while (opModeIsActive()) {
             //to drive robot
-            while(gamepad1.a) {
+            if(gamepad1.a) { //does left back
                 leftFront.setPower(testingPower);
+            } else {
+                leftFront.setPower(0);
             }
-            while(gamepad1.b) {
+            if(gamepad1.b) { //does left front
                 rightFront.setPower(testingPower);
+            } else {
+                rightFront.setPower(0);
             }
-            while(gamepad1.x) {
+            if(gamepad1.x) { //right front
                 leftBack.setPower(testingPower);
+            } else {
+                leftBack.setPower(0);
             }
-            while(gamepad1.y) {
+            if(gamepad1.y) { //corect
                 rightBack.setPower(testingPower);
+            } else {
+                rightBack.setPower(0);
             }
             //move harvesterLift up
-            while(gamepad1.dpad_up) {
+            if(gamepad1.dpad_up) {
                 harvesterLift.setPower(testingPower);
+            } else {
+                harvesterLift.setPower(0);
             }
             //move harvesterLift down
-            while(gamepad1.dpad_down) {
+            if(gamepad1.dpad_down) {
                 harvesterLift.setPower(-testingPower);
+            } else {
+                harvesterLift.setPower(0);
             }
             //move lift up
-            while(gamepad1.dpad_right) {
+            if(gamepad1.dpad_right) {
                 lift.setPower(testingPower);
+            } else {
+                lift.setPower(0);
             }
             //move lift down
-            while(gamepad1.dpad_left) {
+            if(gamepad1.dpad_left) {
                 lift.setPower(-testingPower);
+            } else {
+                lift.setPower(0);
             }
             if (gamepad1.right_bumper) {
             // if the right_bumper is pushed, start the servo

@@ -358,6 +358,7 @@ public class FtcRobotControllerActivity extends Activity
     /***START OF VISION CODE***/
     myOnCreate();
     myOnPause();
+    cameraView.disableView();
     /***END OF VISION CODE***/
 
     preferencesHelper = new PreferencesHelper(TAG, context);

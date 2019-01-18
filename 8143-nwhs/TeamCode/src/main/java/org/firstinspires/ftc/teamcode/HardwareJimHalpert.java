@@ -22,6 +22,7 @@ public class HardwareJimHalpert {
 
     //private members
     HardwareMap hardwareMap               =  null;
+    public boolean harvesterIsOn = false;
 
     //constructor
     public HardwareJimHalpert(){
@@ -43,5 +44,56 @@ public class HardwareJimHalpert {
         // define and initialize servos
         liftHook = hardwareMap.get(Servo.class, "liftHook");
         harvesterIntake = hardwareMap.get(Servo.class, "harvesterIntake");
+
+        //reverse left side
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
+
+        liftHook.setPosition(.04);
+        harvesterIntake.setPosition(.5);
+        zeroPower();
     }
+
+    public void zeroPower() {
+        leftFront.setPower(0);
+        leftBack.setPower(0);
+        rightFront.setPower(0);
+        rightBack.setPower(0);
+    }
+
+    public void leftDrive(double power) {
+        leftFront.setPower(power);
+        leftBack.setPower(power);
+    }
+    public void rightDrive(double power) {
+        rightFront.setPower(power);
+        rightBack.setPower(power);
+    }
+
+    public void harvesterOn() {
+        harvesterIntake.setPosition(.9);
+        harvesterIsOn =true;
+    }
+
+    public void harvesterReverse() {
+        harvesterIntake.setPosition(.1);
+        harvesterIsOn = true;
+    }
+
+    public void harvesterOff() {
+        harvesterIntake.setPosition(.5);
+        harvesterIsOn =false;
+    }
+    public void setMotorMode(DcMotor.RunMode runMode) {
+        leftFront.setMode(runMode);
+        leftBack.setMode(runMode);
+        rightFront.setMode(runMode);
+        rightBack.setMode(runMode);
+    }
+
+    public void resetEncoders() {
+        setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+
 }
