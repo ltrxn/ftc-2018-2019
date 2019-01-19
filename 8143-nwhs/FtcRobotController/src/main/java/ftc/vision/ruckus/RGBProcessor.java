@@ -14,8 +14,8 @@ import ftc.vision.ImUtil;
 import ftc.vision.ImageProcessor;
 import ftc.vision.Result;
 
-public class MineralProcessor implements ImageProcessor {
-    private static final String TAG = "MineralProcessor";
+public class RGBProcessor implements ImageProcessor {
+    private static final String TAG = "RGBProcessor";
 
     @Override
     public Result process(Mat rgbaFrame) {
@@ -35,8 +35,8 @@ public class MineralProcessor implements ImageProcessor {
 //        hsvMin.add(new Scalar( 60/2,  100, 150)); //green min
 //        hsvMax.add(new Scalar(180/2, 255, 255)); //green max
 
-        hsvMin.add(new Scalar(30/2,  100, 150)); //yellow min
-        hsvMax.add(new Scalar( 70/2, 255, 255)); //yellow max
+        hsvMin.add(new Scalar(330/2,  100, 150)); //red min
+        hsvMax.add(new Scalar( 40/2, 255, 255)); //red max
 
         hsvMin.add(new Scalar( 60/2,  100, 150)); //green min
         hsvMax.add(new Scalar(180/2, 255, 255)); //green max
@@ -51,7 +51,7 @@ public class MineralProcessor implements ImageProcessor {
         Mat maskedFrame;
 
         // index of the max mass
-        //0 = yellow, 1 = blue, 2 = green, 3 = unknown
+        //0 = white, 1 = yellow, 2 = unknown
         int[] colorOfMaxMass = { 3, 3, 3};
 
 
@@ -100,10 +100,10 @@ public class MineralProcessor implements ImageProcessor {
         Core.merge(rgbaChannels, rgbaFrame);
 
 
-        MineralColorResult.MineralColor[] mineralColors = MineralColorResult.MineralColor.values();
-        MineralColorResult.MineralColor left = mineralColors[colorOfMaxMass[0]];
-        MineralColorResult.MineralColor middle = mineralColors[colorOfMaxMass[1]];
-        MineralColorResult.MineralColor right = mineralColors[colorOfMaxMass[2]];
+        RGBColorResult.RGBColor[] rgbColors = RGBColorResult.RGBColor.values();
+        RGBColorResult.RGBColor left = rgbColors[colorOfMaxMass[0]];
+        RGBColorResult.RGBColor middle = rgbColors[colorOfMaxMass[1]];
+        RGBColorResult.RGBColor right = rgbColors[colorOfMaxMass[2]];
 
 
         //draw the color result bars
@@ -117,6 +117,6 @@ public class MineralProcessor implements ImageProcessor {
 //        Imgproc.rectangle(rgbaFrame, new Point(frameWidth * (1/3), 0), new Point(frameWidth * (2/3), barHeight), middle.color, barHeight);
 //        Imgproc.rectangle(rgbaFrame, new Point(frameWidth * (2/3), 0), new Point(frameWidth, barHeight), right.color, barHeight);
 
-        return new Result(rgbaFrame, new MineralColorResult(left, middle, right));
+        return new Result(rgbaFrame, new RGBColorResult(left, middle, right));
     }
 }

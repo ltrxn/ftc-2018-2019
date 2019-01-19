@@ -7,8 +7,6 @@ public class AutoOpMode extends OpModeBase {
     public void runOpMode() throws InterruptedException {
         FieldPositonData.FieldPosition position = FieldPositonData.fieldPostion;
         hardwareMap();
-        initServos();
-        initSensors();
         waitForStart();
         switch(position) {
             case RED_TOP:

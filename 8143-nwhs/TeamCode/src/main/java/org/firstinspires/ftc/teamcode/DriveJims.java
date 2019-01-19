@@ -16,7 +16,6 @@ public class DriveJims extends LinearOpMode {
         telemetry.update();
         robot.init(hardwareMap);
         robot.resetEncoders();
-        robot.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Initialization: ", "Ready");
         telemetry.update();
@@ -24,12 +23,16 @@ public class DriveJims extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            //tank drive
+
+            if (gamepad1.right_bumper) {
+                robot.rightFront.setPower(.2);
+            }
+            //tank drive [gamepad 1:left and right joystick]
             robot.leftDrive(gamepad1.left_stick_y);
             robot.rightDrive(gamepad1.right_stick_y);
 
-            //right trigger moves pully up
-            //left trigger moves pully down.
+            //move harvesterLift up [gamepad 2:right trigger]
+            //ove harvesterLift up [gamepad 2:left trigger]
             if (gamepad2.right_trigger>0) {
                 robot.harvesterLift.setPower(gamepad2.right_trigger/2);
             }
@@ -40,24 +43,23 @@ public class DriveJims extends LinearOpMode {
                 robot.harvesterLift.setPower(0.);
             }
 
-            //CHANGE TO if right is >0, then set power, and then ELSE IF left is >0 then set left power.
-
-            //dpad moves lift up
-            if(gamepad1.dpad_up || gamepad2.dpad_up) {
-                robot.lift.setPower(9);
-            } else {
-                robot.lift.setPower(0);
-            }
-
-            //dpad moves lift down
-            if(gamepad1.dpad_down || gamepad2.dpad_down) {
+            //moves lift up [gamepad 1 or 2:dpad up]
+            if(gamepad2.dpad_up) {
+                robot.lift.setPower(.9);
+            } else if (gamepad1.dpad_up) {
+                robot.lift.setPower(.9);
+            //moves lift down [gamepad 1 or 2:dpad down]
+            } else if (gamepad2.dpad_down) {
+                robot.lift.setPower(-.9);
+            } else if (gamepad1.dpad_down) {
                 robot.lift.setPower(-.9);
             } else {
-                robot.lift.setPower(0);
+                    robot.lift.setPower(0);
             }
 
-            //pressing 'a' will turn on/off intake
-            //pressing 'b' will turn on/off outtake
+            //harvester intake [gamepad 2:a]
+            //harvester outtake [gamepad 2:b]
+            //harvester off [gamepad 2:x]
             if (gamepad2.a) {
                 robot.harvesterOn();
             } else if (gamepad2.x) {
@@ -65,13 +67,18 @@ public class DriveJims extends LinearOpMode {
             } else if (gamepad2.b) {
                 robot.harvesterReverse();
             }
-            //pressing y will bring hook to vertical position
+
+            //hook to vertical position [gamepad2:dpad right]
             if (gamepad2.dpad_right) {
+                robot.liftHook.setPosition(0.04);
+            } else if (gamepad1.dpad_right) {
                 robot.liftHook.setPosition(0.04);
             }
 
-            //pressing b will unhook
+            //hook to horizontal position/unhook [gamepad2:dpad left]
             if (gamepad2.dpad_left) {
+                robot.liftHook.setPosition(.3);
+            } else if (gamepad1.dpad_left) {
                 robot.liftHook.setPosition(.3);
             }
 
@@ -93,6 +100,7 @@ public class DriveJims extends LinearOpMode {
             telemetry.addData("lift power |", robot.lift.getPower());
             telemetry.addData("harvesterLift power |", robot.harvesterLift.getPower());
             telemetry.addData("harvesterIntake power |", robot.harvesterIntake.getPosition());
+            telemetry.addData("liftHook Position |", robot.liftHook.getPosition());
             telemetry.update();
         }
     }

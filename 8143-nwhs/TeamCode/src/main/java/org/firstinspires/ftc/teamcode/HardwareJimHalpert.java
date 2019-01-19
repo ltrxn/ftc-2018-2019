@@ -93,6 +93,7 @@ public class HardwareJimHalpert {
 
     public void resetEncoders() {
         setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 

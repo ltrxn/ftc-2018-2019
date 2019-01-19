@@ -7,6 +7,9 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 
+import ftc.vision.ruckus.MineralColorResult;
+import ftc.vision.ruckus.MineralProcessor;
+
 public class FrameGrabber implements CameraBridgeViewBase.CvCameraViewListener2 {
 
     //VARIABLES

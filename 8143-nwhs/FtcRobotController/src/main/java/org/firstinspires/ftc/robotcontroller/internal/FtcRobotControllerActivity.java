@@ -130,6 +130,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import ftc.vision.FrameGrabber;
 import ftc.vision.Result;
 import ftc.vision.ruckus.MineralProcessor;
+import ftc.vision.ruckus.RGBProcessor;
 import ftcrobotcontroller.FieldPositionActivity;
 
 @SuppressWarnings("WeakerAccess")
@@ -203,6 +204,10 @@ public class FtcRobotControllerActivity extends Activity
       }
     }
   };
+
+  public static Result processFrame() {
+    return frameGrabber.processFrame();
+  }
 
   void myOnCreate() {
     //find camera view
