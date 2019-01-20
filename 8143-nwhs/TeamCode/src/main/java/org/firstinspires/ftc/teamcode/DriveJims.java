@@ -85,11 +85,11 @@ public class DriveJims extends LinearOpMode {
 
             //drop team marker [gamepad2.right_bumper]
             if (gamepad2.right_bumper) {
-                robot.teamDropper.setPosition(.5);
+                robot.dropTeamMarker();
             }
             //up team marker [gamepad2.left_bumper]
             if (gamepad2.left_bumper) {
-                robot.teamDropper.setPosition(.8);
+                robot.riseTeamMarker();
             }
 
             //telemetry

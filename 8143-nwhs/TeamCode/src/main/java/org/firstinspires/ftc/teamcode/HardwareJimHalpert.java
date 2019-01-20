@@ -118,4 +118,12 @@ public class HardwareJimHalpert {
     public int position() {
         return rightBack.getCurrentPosition();
     }
+
+    public void dropTeamMarker() {
+        teamDropper.setPosition(.5);
+    }
+
+    public void riseTeamMarker() {
+        teamDropper.setPosition(.8);
+    }
 }
