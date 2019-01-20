@@ -5,12 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
-
-import ftc.vision.FrameGrabber;
-import ftc.vision.Result;
-import ftc.vision.ruckus.MineralColorResult;
-
 import static org.firstinspires.ftc.teamcode.HardwareJimHalpert.INCHES_TO_TICKS;
 
 @Autonomous(name = "Blue Team Marker")
@@ -19,6 +13,8 @@ public class AutoBlueTeamMarker extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double DRIVE_SPEED = 0.3;
+    static final double TURN_90 = 3;
+    static final double TURN_45 = 1.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -34,45 +30,22 @@ public class AutoBlueTeamMarker extends LinearOpMode {
 
         waitForStart();
 
-//        //drop off from lander
-//        robot.lift.setPower(DRIVE_SPEED);
-//        robot.lift.setPower(DRIVE_SPEED);
-//        runtime.reset();
-//        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-//            telemetry.addData("Lift Drop", "Leg 1: %2.5f S Elapsed", runtime.seconds());
-//            telemetry.update();
-//        }
-//        robot.lift.setPower(0);
-
-        encoderDrive(.3, 10);
-
-        //drive forwards
-        robot.leftDrive(DRIVE_SPEED);
-        robot.rightDrive(DRIVE_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 4)) {
-            telemetry.addData("Drive forward", "Leg 1: %2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.zeroPower();
+        encoderDrive(DRIVE_SPEED, 4.5);
+        turnForwardLeft(TURN_90);
+        encoderDrive(DRIVE_SPEED,20);
+        turnForwardLeft(TURN_90);
+        encoderDrive(DRIVE_SPEED,24);
+        turnForwardRight(TURN_90);
+        encoderDrive(DRIVE_SPEED, 10);
+        // only if you want to place team marker & park (unlikely) turnBackwardsRight(TURN_90);
+        turnForwardRight(TURN_90);
+        encoderDrive(DRIVE_SPEED, 40);
 
 
-        //Scan for mineral
-       Result mineralPosition = FtcRobotControllerActivity.processFrame();
-
-//        MineralColorResult.MineralColor leftColor = mineralPosition.get
-        telemetry.addData("Result", mineralPosition.toString());
-        telemetry.update();
-
-        //drive forward
-        robot.leftDrive(DRIVE_SPEED);
-        robot.rightDrive(DRIVE_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3)) {
-            telemetry.addData("Drive forward", "Leg 1: %2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        robot.zeroPower();
+//        //Scan for mineral
+//       Result mineralPosition = FtcRobotControllerActivity.processFrame();
+//        telemetry.addData("Result", mineralPosition.toString());
+//        telemetry.update();
     }
 
     public void encoderDrive(double speed, double distance) {
@@ -92,5 +65,38 @@ public class AutoBlueTeamMarker extends LinearOpMode {
         robot.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
+    }
+
+    public void turnForwardLeft(double time) {
+        robot.rightDrive(DRIVE_SPEED);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turn 90 counter clockwise", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+    }
+    public void turnBackwardsLeft(double time) {
+        robot.rightDrive(-DRIVE_SPEED);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turn 90 counter clockwise", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+    }
+    public void turnForwardRight(double time) {
+        robot.leftDrive(DRIVE_SPEED);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turn 90 counter clockwise", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+    }
+    public void turnBackwardsRight(double time) {
+        robot.leftDrive(-DRIVE_SPEED);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turn 90 counter clockwise", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
     }
 }
