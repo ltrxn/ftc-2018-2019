@@ -13,8 +13,8 @@ public class AutoBlueTeamMarker extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double DRIVE_SPEED = 0.3;
-    static final double TURN_90 = 3;
-    static final double TURN_45 = 1.5;
+    static final double TURN_90 = 4;
+    static final double TURN_45 = 2;
 
     @Override
     public void runOpMode() throws InterruptedException {
