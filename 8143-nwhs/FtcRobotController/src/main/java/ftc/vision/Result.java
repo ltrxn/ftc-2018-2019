@@ -23,6 +23,7 @@ public class Result<ResultType> {
         return frame;
     }
 
+
     @Override
     public String toString() {
         if (isResultNull()) {

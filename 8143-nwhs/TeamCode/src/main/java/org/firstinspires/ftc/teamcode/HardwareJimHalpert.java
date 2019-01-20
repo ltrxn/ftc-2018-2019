@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -16,13 +17,14 @@ public class HardwareJimHalpert {
     public DcMotor  rightBack       = null;
     public DcMotor  lift            = null;
     public DcMotor  harvesterLift   = null;
-
+    public DcMotor  lights          = null;
     public Servo    liftHook        = null;
     public Servo    harvesterIntake = null;
-
+    public Servo    teamDropper     = null;
     //private members
     HardwareMap hardwareMap               =  null;
     public boolean harvesterIsOn = false;
+    public final static int INCHES_TO_TICKS = 117; //5600 for 2 mat length
 
     //constructor
     public HardwareJimHalpert(){
@@ -41,19 +43,28 @@ public class HardwareJimHalpert {
         rightBack = hardwareMap.get(DcMotor.class, "rightBack");
         lift = hardwareMap.get(DcMotor.class, "lift");
         harvesterLift = hardwareMap.get(DcMotor.class, "harvesterLift");
+        lights = hardwareMap.get(DcMotor.class, "lights");
+
         // define and initialize servos
         liftHook = hardwareMap.get(Servo.class, "liftHook");
         harvesterIntake = hardwareMap.get(Servo.class, "harvesterIntake");
+        teamDropper = hardwareMap.get(Servo.class, "teamDropper");
 
         //reverse left side
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
-        liftHook.setPosition(.04);
+        hookOn();
         harvesterIntake.setPosition(.5);
         zeroPower();
     }
 
+    public void motorDirection() {
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
+    }
     public void zeroPower() {
         leftFront.setPower(0);
         leftBack.setPower(0);
@@ -91,10 +102,20 @@ public class HardwareJimHalpert {
         rightBack.setMode(runMode);
     }
 
+    public void hookOn() {
+        liftHook.setPosition(.2);
+    }
+
+    public void hookOff() {
+        liftHook.setPosition(1);
+    }
+
     public void resetEncoders() {
         setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-
+    public int position() {
+        return rightBack.getCurrentPosition();
+    }
 }
