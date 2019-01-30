@@ -30,6 +30,12 @@ public class AutoTeamMarker extends LinearOpMode {
 
         waitForStart();
 
+        robot.harvesterLift.setPower(.2);
+        while(runtime.seconds()<2 && opModeIsActive()) {
+            telemetry.addData("raising lift", "%2f elapsed out of %2f", runtime.seconds(), 2);
+            telemetry.update();
+        }
+        robot.harvesterLift.setPower(0);
         encoderDrive(DRIVE_SPEED, 4.5);
         turnForwardLeft(TURN_90);
         encoderDrive(DRIVE_SPEED,10);

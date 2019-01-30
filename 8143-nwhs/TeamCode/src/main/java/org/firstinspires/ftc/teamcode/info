@@ -1,0 +1,4 @@
+//        //Scan for mineral
+//       Result mineralPosition = FtcRobotControllerActivity.processFrame();
+//        telemetry.addData("Result", mineralPosition.toString());
+//        telemetry.update();
