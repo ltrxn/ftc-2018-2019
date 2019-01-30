@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "Jimmies Drive", group = "official")
 
@@ -84,11 +83,11 @@ public class DriveJims extends LinearOpMode {
             robot.lights.setPower(gamepad1.right_trigger / 2);
 
             //drop team marker [gamepad2.right_bumper]
-            if (gamepad2.right_bumper) {
+            if (gamepad1.right_bumper) {
                 robot.dropTeamMarker();
             }
             //up team marker [gamepad2.left_bumper]
-            if (gamepad2.left_bumper) {
+            if (gamepad1.left_bumper) {
                 robot.riseTeamMarker();
             }
 

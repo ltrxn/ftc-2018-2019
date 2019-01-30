@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -27,11 +26,11 @@ public class HardwareJimHalpert {
     public Servo liftHook = null;
     public Servo harvesterIntake = null;
     public Servo teamDropper = null;
+    public BNO055IMU imu = null;
     //private members
-    BNO055IMU imu;
     HardwareMap hardwareMap = null;
     public boolean harvesterIsOn = false;
-    public final static int INCHES_TO_TICKS = 117; //5600 for 2 mat length
+    public final static int INCHES_TO_TICKS = 115; //5600 for 2 mat length
 
     //constructor
     public HardwareJimHalpert() {
@@ -55,7 +54,12 @@ public class HardwareJimHalpert {
         // define and initialize servos
         liftHook = hardwareMap.get(Servo.class, "liftHook");
         harvesterIntake = hardwareMap.get(Servo.class, "harvesterIntake");
-        teamDropper = hardwareMap.get(Servo.class, "teamDropper");
+        teamDropper = hardwareMap.get(Servo.class, "markerDropper");
+
+
+        //reverse left side
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        rightBack.setDirection(DcMotor.Direction.REVERSE);
 
         //IMU GYRO
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -68,9 +72,6 @@ public class HardwareJimHalpert {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        //reverse left side
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        rightBack.setDirection(DcMotor.Direction.REVERSE);
 
         hookOff();
         harvesterIntake.setPosition(.5);
@@ -145,42 +146,16 @@ public class HardwareJimHalpert {
     }
 
     public void riseTeamMarker() {
-        teamDropper.setPosition(.8);
+        teamDropper.setPosition(1);
     }
 
     public int getAngleDegree() {
         Orientation angles = null;
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        return (int) angles.firstAngle;
+        return (int) -angles.firstAngle;
     }
 
-    public void turn(int degree) {
-        double leftPower = 0, rightPower = 0;
-        //original position
-        int startingAngle = getAngleDegree();
-        //calculate target
-        int targetAngle = startingAngle + degree;
-        targetAngle %= 360;
-        if (degree > 0) {
-            //turn right
-            leftPower = 1;
-            rightPower = 0;
-        } else if (degree > 0) {
-            //turn left
-            leftPower = 0;
-            rightPower = 1;
-        }
-        leftDrive(leftPower);
-        rightDrive(rightPower);
 
-        while (targetAngle-getAngleDegree() > -2 || targetAngle-getAngleDegree() < 2){
-        }
-        rightDrive(0);
-        leftDrive(0);
-
-    }
-    public void newTurn(int target) {
-        
-    }
 
 }
+
