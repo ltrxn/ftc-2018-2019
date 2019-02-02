@@ -17,7 +17,7 @@ public class AutoTeamMarker extends LinearOpMode {
     HardwareJimHalpert robot = new HardwareJimHalpert();
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double DRIVE_SPEED = 1;
+    static final double DRIVE_SPEED = .4    ;
     static final double TURN_90 = 3;
     static final double TURN_45 = 1;
     @Override
@@ -57,11 +57,13 @@ public class AutoTeamMarker extends LinearOpMode {
         telemetry.addData("Result", mineralPosition.toString());
         telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, 3);
-        turnForwardLeft(TURN_90);
-        encoderDrive(DRIVE_SPEED,9);
-        turnForwardRight(2);
-        encoderDrive(DRIVE_SPEED, 28);
+        encoderDrive(DRIVE_SPEED, 2.5);
+//        turnForwardLeft(TURN_90);
+        turn(-90);
+        encoderDrive(DRIVE_SPEED,4);
+//        turnForwardRight(2);
+        turn(125);
+        encoderDrive(DRIVE_SPEED, 10);
         robot.harvesterLift.setPower(0);
 
         //drop the team marker
@@ -128,7 +130,7 @@ public class AutoTeamMarker extends LinearOpMode {
 
     public void turn(int target) {
         int currentAngle = robot.getAngleDegree(); //robot's current angel
-        double turnSpeed = 1; //how fast to turn
+//        double turnSpeed = 1; //how fast to turn
         int turnTarget = target+currentAngle; //set the target
         turnTarget%=360; //make sure you don't go >360
 
@@ -136,10 +138,10 @@ public class AutoTeamMarker extends LinearOpMode {
 
             if (robot.getAngleDegree()>target) { //if you are to the right of the target, rotate left
                 robot.leftDrive(0);
-                robot.rightDrive(turnSpeed);
+                robot.rightDrive(DRIVE_SPEED);
             }
             if (robot.getAngleDegree()<target) { //if you are to the left of the target, rotate right
-                robot.leftDrive(turnSpeed);
+                robot.leftDrive(DRIVE_SPEED);
                 robot.rightDrive(0);
             }
             sleep(50);

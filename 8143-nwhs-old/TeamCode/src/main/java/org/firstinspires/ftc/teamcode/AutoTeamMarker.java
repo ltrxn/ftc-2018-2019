@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static org.firstinspires.ftc.teamcode.HardwareJimHalpert.INCHES_TO_TICKS;
+//adb connect 192.168.49.1:5555
 
 @Autonomous(name = "position near team marker")
 public class AutoTeamMarker extends LinearOpMode {
@@ -34,13 +35,12 @@ public class AutoTeamMarker extends LinearOpMode {
             telemetry.update();
         }
         robot.harvesterLift.setPower(.1);
-//adb connect 192.168.49.1:5555
         encoderDrive(DRIVE_SPEED, 3);
-        turnForwardLeft(TURN_90);
+//        turnForwardLeft(TURN_90);
+        turn(-90);
         encoderDrive(DRIVE_SPEED,9);
-        turnForwardRight(2);
-//        encoderDrive(DRIVE_SPEED, 1);
-//        turnForwardRight(TURN_90);
+//        turnForwardRight(2);
+        turn(135);
         encoderDrive(DRIVE_SPEED, 28);
         robot.harvesterLift.setPower(0);
 

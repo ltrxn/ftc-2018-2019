@@ -23,6 +23,6 @@ public class AutoTesting extends LinearOpMode {
 
         waitForStart();
 
-        robot.turn(90);
+//        turn(90);
     }
 }
