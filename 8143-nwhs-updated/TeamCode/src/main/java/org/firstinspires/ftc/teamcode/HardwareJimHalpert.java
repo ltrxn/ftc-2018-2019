@@ -26,6 +26,7 @@ public class HardwareJimHalpert {
     public Servo liftHook = null;
     public Servo harvesterIntake = null;
     public Servo teamDropper = null;
+    public Servo craterRaker = null;
     public BNO055IMU imu = null;
     //private members
     HardwareMap hardwareMap = null;
@@ -55,6 +56,7 @@ public class HardwareJimHalpert {
         liftHook = hardwareMap.get(Servo.class, "liftHook");
         harvesterIntake = hardwareMap.get(Servo.class, "harvesterIntake");
         teamDropper = hardwareMap.get(Servo.class, "markerDropper");
+        craterRaker = hardwareMap.get(Servo.class, "craterRaker");
 
 
         //reverse left side
@@ -75,6 +77,7 @@ public class HardwareJimHalpert {
 
         hookOff();
         harvesterIntake.setPosition(.5);
+        craterRaker.setPosition(.6);
         zeroPower();
     }
 

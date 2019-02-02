@@ -1,0 +1,35 @@
+VARIOUS TURN METHODS USING TIME
+
+    public void turnForwardLeft(double time) {
+        robot.rightDrive(.6);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turnForwardLeft", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+    }
+    public void turnBackwardsLeft(double time) {
+        robot.rightDrive(-DRIVE_SPEED);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turnBackwardsLeft", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+    }
+    public void turnForwardRight(double time) {
+        robot.leftDrive(.6);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turnForwardRight", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+        robot.zeroPower();
+    }
+    public void turnBackwardsRight(double time) {
+        robot.leftDrive(-DRIVE_SPEED);
+        runtime.reset();
+        while(runtime.seconds()<time && opModeIsActive()) {
+            telemetry.addData("turnBackwardsRight", "%2f elapsed out of %2f", runtime.seconds(), time);
+            telemetry.update();
+        }
+    }

@@ -20,6 +20,7 @@ public class AutoTeamMarker extends LinearOpMode {
     static final double DRIVE_SPEED = .4    ;
     static final double TURN_90 = 3;
     static final double TURN_45 = 1;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Initialization: ", "In Progress");
@@ -28,16 +29,19 @@ public class AutoTeamMarker extends LinearOpMode {
         robot.init(hardwareMap);
         robot.motorDirection();
         robot.resetEncoders();
-
         telemetry.addData("Initialization: ", "Ready");
         telemetry.update();
 
+
         waitForStart();
+
         robot.harvesterLift.setPower(.5);
+
         while(runtime.seconds()<2 && opModeIsActive()) {
             telemetry.addData("raising lift", "%2f elapsed out of %2f", runtime.seconds(), 2);
             telemetry.update();
         }
+
         robot.harvesterLift.setPower(.1);
 
         //Scan for mineral
@@ -53,15 +57,12 @@ public class AutoTeamMarker extends LinearOpMode {
             //drive forward
         }
 
-
         telemetry.addData("Result", mineralPosition.toString());
         telemetry.update();
 
         encoderDrive(DRIVE_SPEED, 2.5);
-//        turnForwardLeft(TURN_90);
         turn(-90);
-        encoderDrive(DRIVE_SPEED,4);
-//        turnForwardRight(2);
+        encoderDrive(DRIVE_SPEED,3);
         turn(125);
         encoderDrive(DRIVE_SPEED, 10);
         robot.harvesterLift.setPower(0);
@@ -70,9 +71,9 @@ public class AutoTeamMarker extends LinearOpMode {
         robot.teamDropper.setPosition(.5);
         runtime.reset();
         while(runtime.seconds()<5 && opModeIsActive()) {
-
             telemetry.update();
         }
+
     }
 
     public void encoderDrive(double speed, double distance) {
@@ -80,8 +81,10 @@ public class AutoTeamMarker extends LinearOpMode {
         target = robot.position() + (int)(distance*INCHES_TO_TICKS);
         robot.rightBack.setTargetPosition(target);
         robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         robot.rightDrive(Math.abs(speed));
         robot.leftDrive(Math.abs(speed));
+
         while (robot.rightBack.isBusy()) {
             // Display it for the driver.
             telemetry.addData("Path1",  "Running to %5d", target);
@@ -94,54 +97,27 @@ public class AutoTeamMarker extends LinearOpMode {
 
     }
 
-    public void turnForwardLeft(double time) {
-        robot.rightDrive(.6);
-        runtime.reset();
-        while(runtime.seconds()<time && opModeIsActive()) {
-            telemetry.addData("turnForwardLeft", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-    public void turnBackwardsLeft(double time) {
-        robot.rightDrive(-DRIVE_SPEED);
-        runtime.reset();
-        while(runtime.seconds()<time && opModeIsActive()) {
-            telemetry.addData("turnBackwardsLeft", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-    public void turnForwardRight(double time) {
-        robot.leftDrive(.6);
-        runtime.reset();
-        while(runtime.seconds()<time && opModeIsActive()) {
-            telemetry.addData("turnForwardRight", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-        robot.zeroPower();
-    }
-    public void turnBackwardsRight(double time) {
-        robot.leftDrive(-DRIVE_SPEED);
-        runtime.reset();
-        while(runtime.seconds()<time && opModeIsActive()) {
-            telemetry.addData("turnBackwardsRight", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-
     public void turn(int target) {
         int currentAngle = robot.getAngleDegree(); //robot's current angel
-//        double turnSpeed = 1; //how fast to turn
-        int turnTarget = target+currentAngle; //set the target
-        turnTarget%=360; //make sure you don't go >360
 
-        while(Math.abs(robot.getAngleDegree()-turnTarget)>3) {
+        int turnTarget = target+currentAngle; //set the target
+
+        if(turnTarget>179) {
+            turnTarget%=180; //make sure you don't go >180
+            turnTarget = -180+turnTarget; //
+        } else if (turnTarget<-179) {
+            turnTarget%=180; //make sure you don't go <-180
+            turnTarget = 180+turnTarget; //
+        }
+
+        while((Math.abs(robot.getAngleDegree()-turnTarget)>3)&&opModeIsActive()) {
 
             if (robot.getAngleDegree()>target) { //if you are to the right of the target, rotate left
                 robot.leftDrive(0);
-                robot.rightDrive(DRIVE_SPEED);
+                robot.rightDrive(1);
             }
             if (robot.getAngleDegree()<target) { //if you are to the left of the target, rotate right
-                robot.leftDrive(DRIVE_SPEED);
+                robot.leftDrive(1);
                 robot.rightDrive(0);
             }
             sleep(50);
