@@ -91,6 +91,13 @@ public class DriveJims extends LinearOpMode {
                 robot.riseTeamMarker();
             }
 
+            if (gamepad2.right_stick_button) {
+                robot.craterRakerDown();
+            } else if (gamepad2.left_stick_button) {
+                robot.craterRakerUp();
+            } else if (gamepad2.y) {
+                robot.craterRakerMid();
+            }
             //telemetry
             telemetry.addLine("left joystick | ")
                     .addData("x", gamepad1.left_stick_x)
@@ -110,6 +117,7 @@ public class DriveJims extends LinearOpMode {
             telemetry.addData("harvesterLift power |", robot.harvesterLift.getPower());
             telemetry.addData("harvesterIntake power |", robot.harvesterIntake.getPosition());
             telemetry.addData("liftHook Position |", robot.liftHook.getPosition());
+            telemetry.addData("craterRaker Position |", robot.craterRaker.getPosition());
             telemetry.update();
         }
     }

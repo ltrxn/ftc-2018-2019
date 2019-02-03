@@ -32,15 +32,18 @@ public class AutoCrater extends LinearOpMode {
         waitForStart();
 
         encoderDrive(DRIVE_SPEED, 4.5);
-        turnForwardLeft(TURN_90);
+//        turnForwardLeft(TURN_90);
+        turn(-90);
         encoderDrive(DRIVE_SPEED, 20);
 //        turnForwardLeft(TURN_90);
         turn(90);
         encoderDrive(DRIVE_SPEED, 24);
-        turnForwardRight(TURN_45);
+//        turnForwardRight(TURN_45);
+        turn(45);
         encoderDrive(DRIVE_SPEED, 10);
         // only if you want to place team marker & park (unlikely) turnBackwardsRight(TURN_90);
-        turnForwardRight(TURN_90);
+//        turnForwardRight(TURN_90);
+        turn(90);
         encoderDrive(DRIVE_SPEED, 40);
 
         //drop the team marker

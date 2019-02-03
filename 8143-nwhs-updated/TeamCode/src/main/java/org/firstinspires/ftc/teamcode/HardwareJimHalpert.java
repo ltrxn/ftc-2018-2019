@@ -31,7 +31,7 @@ public class HardwareJimHalpert {
     //private members
     HardwareMap hardwareMap = null;
     public boolean harvesterIsOn = false;
-    public final static int INCHES_TO_TICKS = 115; //5600 for 2 mat length
+    public final static int INCHES_TO_TICKS = 72; //5600 for 2 mat length
 
     //constructor
     public HardwareJimHalpert() {
@@ -77,7 +77,7 @@ public class HardwareJimHalpert {
 
         hookOff();
         harvesterIntake.setPosition(.5);
-        craterRaker.setPosition(.6);
+        craterRakerUp();
         zeroPower();
     }
 
@@ -148,8 +148,21 @@ public class HardwareJimHalpert {
         teamDropper.setPosition(.5);
     }
 
+
     public void riseTeamMarker() {
         teamDropper.setPosition(1);
+    }
+
+    public void craterRakerUp() {
+        craterRaker.setPosition(.28);
+    }
+
+    public void craterRakerMid() {
+        craterRaker.setPosition(.48);
+    }
+
+    public void craterRakerDown() {
+        craterRaker.setPosition(.78);
     }
 
     public int getAngleDegree() {

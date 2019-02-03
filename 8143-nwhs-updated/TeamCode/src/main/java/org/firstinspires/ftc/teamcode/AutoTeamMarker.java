@@ -17,7 +17,7 @@ public class AutoTeamMarker extends LinearOpMode {
     HardwareJimHalpert robot = new HardwareJimHalpert();
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double DRIVE_SPEED = .4    ;
+    static final double DRIVE_SPEED = 1    ;
     static final double TURN_90 = 3;
     static final double TURN_45 = 1;
 
@@ -60,20 +60,26 @@ public class AutoTeamMarker extends LinearOpMode {
         telemetry.addData("Result", mineralPosition.toString());
         telemetry.update();
 
-        encoderDrive(DRIVE_SPEED, 2.5);
-        turn(-90);
-        encoderDrive(DRIVE_SPEED,3);
-        turn(125);
-        encoderDrive(DRIVE_SPEED, 10);
+        encoderDrive(DRIVE_SPEED, 14); //2.5
+        turn(-90); //-90
+
+        encoderDrive(DRIVE_SPEED,20); //3
+        turn(115); //125
+        encoderDrive(DRIVE_SPEED, 30); //10
         robot.harvesterLift.setPower(0);
 
         //drop the team marker
-        robot.teamDropper.setPosition(.5);
+        robot.dropTeamMarker();
         runtime.reset();
-        while(runtime.seconds()<5 && opModeIsActive()) {
+        while(runtime.seconds()<2 && opModeIsActive()) {
+            telemetry.addData("team marker arm will rise in ", runtime.seconds());
             telemetry.update();
         }
-
+        robot.riseTeamMarker();
+        while(runtime.seconds()<4 && opModeIsActive()) {
+            telemetry.addData("GOOD LUCK", runtime.seconds());
+            telemetry.update();
+        }
     }
 
     public void encoderDrive(double speed, double distance) {
