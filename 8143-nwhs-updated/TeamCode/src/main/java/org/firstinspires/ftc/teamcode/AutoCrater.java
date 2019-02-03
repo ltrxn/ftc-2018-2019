@@ -13,7 +13,7 @@ public class AutoCrater extends LinearOpMode {
     HardwareJimHalpert robot = new HardwareJimHalpert();
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double DRIVE_SPEED = 0.3;
+    static final double DRIVE_SPEED = 1;
     static final double TURN_90 = 4;
     static final double TURN_45 = 2;
 
@@ -31,38 +31,37 @@ public class AutoCrater extends LinearOpMode {
 
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED, 4.5);
-//        turnForwardLeft(TURN_90);
+        encoderDrive(DRIVE_SPEED, 14);
         turn(-90);
-        encoderDrive(DRIVE_SPEED, 20);
-//        turnForwardLeft(TURN_90);
-        turn(90);
-        encoderDrive(DRIVE_SPEED, 24);
-//        turnForwardRight(TURN_45);
-        turn(45);
-        encoderDrive(DRIVE_SPEED, 10);
-        // only if you want to place team marker & park (unlikely) turnBackwardsRight(TURN_90);
-//        turnForwardRight(TURN_90);
-        turn(90);
+        encoderDrive(DRIVE_SPEED, 40);
+        turnNeg45();
         encoderDrive(DRIVE_SPEED, 40);
 
         //drop the team marker
         robot.dropTeamMarker();
+        runtime.reset();
         while (runtime.seconds() < 2 && opModeIsActive()) {
-            telemetry.addData("dropping team marker", "%2f elapsed out of %2f", runtime.seconds(), 2);
+            telemetry.addData("team marker arm will rise in ", runtime.seconds());
             telemetry.update();
         }
         robot.riseTeamMarker();
+        while (runtime.seconds() < 4 && opModeIsActive()) {
+            telemetry.addData("GOOD LUCK", runtime.seconds());
+            telemetry.update();
+        }
 
     }
+
 
     public void encoderDrive(double speed, double distance) {
         int target;
         target = robot.position() + (int) (distance * INCHES_TO_TICKS);
         robot.rightBack.setTargetPosition(target);
         robot.rightBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         robot.rightDrive(Math.abs(speed));
         robot.leftDrive(Math.abs(speed));
+
         while (robot.rightBack.isBusy()) {
             // Display it for the driver.
             telemetry.addData("Path1", "Running to %5d", target);
@@ -75,65 +74,70 @@ public class AutoCrater extends LinearOpMode {
 
     }
 
-    public void turnForwardLeft(double time) {
-        robot.rightDrive(DRIVE_SPEED);
-        runtime.reset();
-        while (runtime.seconds() < time && opModeIsActive()) {
-            telemetry.addData("turnForwardLeft", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-
-    public void turnForwardRight(double time) {
-        robot.leftDrive(DRIVE_SPEED);
-        runtime.reset();
-        while (runtime.seconds() < time && opModeIsActive()) {
-            telemetry.addData("turnForwardRight", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-
-    public void turnBackwardsLeft(double time) {
-        robot.rightDrive(-DRIVE_SPEED);
-        runtime.reset();
-        while (runtime.seconds() < time && opModeIsActive()) {
-            telemetry.addData("turnBackwardsLeft", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-
-    public void turnBackwardsRight(double time) {
-        robot.leftDrive(-DRIVE_SPEED);
-        runtime.reset();
-        while (runtime.seconds() < time && opModeIsActive()) {
-            telemetry.addData("turnBackwardsRight", "%2f elapsed out of %2f", runtime.seconds(), time);
-            telemetry.update();
-        }
-    }
-
     public void turn(int target) {
         int currentAngle = robot.getAngleDegree(); //robot's current angel
-        double turnSpeed = 1; //how fast to turn
         int turnTarget = target + currentAngle; //set the target
-        turnTarget %= 360; //make sure you don't go >360
 
-        while (Math.abs(robot.getAngleDegree() - turnTarget) > 3) {
-
-            if (robot.getAngleDegree() > target) { //if you are to the right of the target, rotate left
-                robot.leftDrive(0);
-                robot.rightDrive(turnSpeed);
-            }
-            if (robot.getAngleDegree() < target) { //if you are to the left of the target, rotate right
-                robot.leftDrive(turnSpeed);
+        if (turnTarget > 179) {
+            turnTarget %= 180; //make sure you don't go >180
+            turnTarget = -180 + turnTarget;
+            while ((Math.abs(robot.getAngleDegree() - turnTarget) > 3) && opModeIsActive()) {
+                robot.leftDrive(1);
                 robot.rightDrive(0);
+                telemetry.addData("current position", robot.getAngleDegree());
+                telemetry.addData("target position", turnTarget);
+                telemetry.addData("difference between current and target: ", Math.abs(robot.getAngleDegree() - turnTarget));
+                telemetry.addData("is current greater? ", robot.getAngleDegree() > target);
+                telemetry.update();
             }
-            sleep(50);
-            telemetry.addData("current position", robot.getAngleDegree());
-            telemetry.addData("target position", turnTarget);
-            telemetry.update();
+
+        } else if (turnTarget < -179) {
+            turnTarget %= 180; //make sure you don't go <-180
+            turnTarget = 180 + turnTarget;
+            while ((Math.abs(robot.getAngleDegree() - turnTarget) > 3) && opModeIsActive()) {
+
+                robot.leftDrive(0);
+                robot.rightDrive(1);
+                telemetry.addData("current position", robot.getAngleDegree());
+                telemetry.addData("target position", turnTarget);
+                telemetry.addData("difference between current and target: ", Math.abs(robot.getAngleDegree() - turnTarget));
+                telemetry.addData("is current greater? ", robot.getAngleDegree() > target);
+                telemetry.update();
+            }
+        } else {
+
+            while ((Math.abs(robot.getAngleDegree() - turnTarget) > 3) && opModeIsActive()) {
+                if (robot.getAngleDegree() > target) { //if you are to the right of the target, rotate left
+                    robot.leftDrive(0);
+                    robot.rightDrive(1);
+                }
+                if (robot.getAngleDegree() < target) { //if you are to the left of the target, rotate right
+                    robot.leftDrive(1);
+                    robot.rightDrive(0);
+                }
+                telemetry.addData("current position", robot.getAngleDegree());
+                telemetry.addData("target position", turnTarget);
+                telemetry.addData("difference between current and target: ", Math.abs(robot.getAngleDegree() - turnTarget));
+                telemetry.addData("is current greater? ", robot.getAngleDegree() > target);
+                telemetry.addData("is -70>-130: ", -70 > -130);
+                telemetry.update();
+            }
         }
         robot.leftDrive(0); //stop driving once target is reached
         robot.rightDrive(0);
     }
 
+    public void turnNeg45() {
+        int currentAngle = robot.getAngleDegree(); //robot's current angel
+        int turnTarget = currentAngle - 45; //set the target
+        if (turnTarget < -179) {
+            turnTarget %= 180; //make sure you don't go <-180
+            turnTarget = 180 + turnTarget;
+        }
+        while ((Math.abs(robot.getAngleDegree() - turnTarget) > 3) && opModeIsActive()) {
+            robot.leftDrive(0);
+            robot.rightDrive(1);
+        }
+        robot.zeroPower();
+    }
 }

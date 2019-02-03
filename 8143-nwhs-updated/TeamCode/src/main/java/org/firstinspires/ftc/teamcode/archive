@@ -33,3 +33,28 @@ VARIOUS TURN METHODS USING TIME
             telemetry.update();
         }
     }
+
+
+    OLD CODE
+
+        encoderDrive(DRIVE_SPEED, 15);
+        sleep(500);
+        turn(-90);
+        sleep(500);
+
+        encoderDrive(DRIVE_SPEED, 15);
+        sleep(500);
+
+
+//        turnForwardLeft(TURN_90);
+        turn(-45);
+        sleep(500);
+
+//        encoderDrive(DRIVE_SPEED, 24);
+//        turnForwardRight(TURN_45);
+//        encoderDrive(DRIVE_SPEED, 10);
+        // only if you want to place team marker & park (unlikely) turnBackwardsRight(TURN_90);
+//        turnForwardRight(TURN_90);
+//        turn(90);
+        encoderDrive(DRIVE_SPEED, 40);
+

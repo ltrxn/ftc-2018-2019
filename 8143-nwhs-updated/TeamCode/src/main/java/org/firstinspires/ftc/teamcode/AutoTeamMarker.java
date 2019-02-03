@@ -29,6 +29,7 @@ public class AutoTeamMarker extends LinearOpMode {
         robot.init(hardwareMap);
         robot.motorDirection();
         robot.resetEncoders();
+
         telemetry.addData("Initialization: ", "Ready");
         telemetry.update();
 
@@ -126,7 +127,6 @@ public class AutoTeamMarker extends LinearOpMode {
                 robot.leftDrive(1);
                 robot.rightDrive(0);
             }
-            sleep(50);
             telemetry.addData("current position", robot.getAngleDegree());
             telemetry.addData("target position", turnTarget);
             telemetry.update();
